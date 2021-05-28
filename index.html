@@ -12,18 +12,82 @@
     </head>
     <body>
         <div class="container">
-            <div class="row" id="pokemones">
-            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="row" id="pokemones">
+    
+                    </div>                
+                </div>
+                <div class="col-4 bg-danger" id="info" >
+                    <h3><span id="pokemon_name"></span></h3>
+                    <h4>Normal</h4>
+                    <span id="pokemon_img"></span>
+                    <h4>Shiny</h4>
+                    <span id="pokemon_imgsh"></span>
+                    
+                    <p>types:
+                        <span id="pokemon_type"></span>
+                    </p>
+                    <p>height:
+                        <span id="pokemon_height"></span>
+                    </p>
+                    <p>weigth:
+                        <span id="pokemon_weigth"></span>
+                    </p>                   
+                </div>
+            </div>           
         </div>
         <script>
             const max_poke=151;
             for(let i=1;i<=max_poke;i++){
                 $('#pokemones').append(`
-                <div class="col-2">
-                <img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${i}.png?raw=true">
+                <div class="col bg-info">
+                    <img value="${i}" src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${i}.png?raw=true">
                 </div>
             `);
             }
+
+            $('img').on("click", function(){
+                let idp=$(this).attr("value");
+                //alert(idp);
+                $('#id_pokemon').append(idp);
+                let url="http://pokeapi.co/api/v2/pokemon/"+idp;
+                $.get(url,function(respuesta){
+                    console.log(respuesta);
+                    limpiar();
+                    $('#pokemon_name').append(respuesta.name);
+                    
+
+                    $('#pokemon_img').append(" <img  src="+respuesta.sprites.front_default+">");
+                    $('#pokemon_img').append(" <img  src="+respuesta.sprites.back_default+">");
+
+                    $('#pokemon_imgsh').append(" <img  src="+respuesta.sprites.front_shiny+">");
+                    $('#pokemon_imgsh').append(" <img  src="+respuesta.sprites.back_shiny+">");
+                    
+
+
+                 //   $('#pokemon_img').append(`<img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${idp}.png?raw=true">`);
+                    $('#pokemon_height').append(respuesta.height);
+                    $('#pokemon_weigth').append(respuesta.weight);
+
+                  //  console.log(respuesta.types[0].type.name);
+
+                    for(let i=0; i<respuesta.types.length;i++){
+//                        $('#pokemon_type').append(respuesta.types[i]);
+                            $('#pokemon_type').append("<li>"+respuesta.types[i].type.name+"</li>");
+                    }
+                });
+            });
+            function limpiar(){
+                $('#pokemon_name').html("");
+                $('#pokemon_img').children().remove();
+                $('#pokemon_imgsh').children().remove();
+                $('#pokemon_height').html("");
+                $('#pokemon_weigth').html("");
+                $('#pokemon_type').html("");
+                
+            };
+
         </script>
     </body>
 </html>

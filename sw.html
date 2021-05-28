@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Prompt:200,300,400,500" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <title>SW</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div class="mb-3">
+                <form id="form-sw">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Id del personaje</label>
+                        <input type="text" class="form-control" id="id-personaje" aria-describedby="emailHelp" placeholder="id personaje">
+                        <small id="emailHelp" class="form-text text-muted">Coloca el id del personaje</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="bg-primary p-4">
+                <p>Nombre: <span id="name"></span></p>
+                <p>Altura:<span id="height"></span></p>
+                <p>Peso:<span id="weight"></span></p>
+                <p>Planeta:<span id="planet"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#form-sw').on('submit',function(e){
+        e.preventDefault(); // evitamos que se recargue la pagina
+        const id_personaje=$('#id-personaje').val();
+        console.log(id_personaje);
+        let url="http://swapi.dev/api/people/"+id_personaje+"/";
+        $.get(url,function(data){
+            //console.log(data);
+            $('#name').html(data.name);
+            $('#height').html(data.height);
+            $('#weight').html(data.mass);
+            home=data.homeworld;
+            $.get(home,function(planeta){
+               // console.log(planeta);
+                $('#planet').html(planeta.name);
+                ;
+            });        
+        });
+    })
+</script>
+</body>
+</html>
