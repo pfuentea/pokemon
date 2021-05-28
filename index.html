@@ -51,7 +51,7 @@
                 let idp=$(this).attr("value");
                 //alert(idp);
                 $('#id_pokemon').append(idp);
-                let url="http://pokeapi.co/api/v2/pokemon/"+idp;
+                let url="https://pokeapi.co/api/v2/pokemon/"+idp;
                 $.get(url,function(respuesta){
                     console.log(respuesta);
                     limpiar();
