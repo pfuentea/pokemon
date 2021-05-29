@@ -8,40 +8,47 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Prompt:200,300,400,500" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+        <link rel="stylesheet" href="./css/style.css">
     </head>
     <body>
         <div class="container">
+           
             <div class="row">
                 <div class="col-8">
-                    <div class="row" id="pokemones">
-    
+                    <div class="row text-center " id="pokemones">
+                        
                     </div>                
                 </div>
-                <div class="col-4 bg-danger" id="info" >
-                    <h3><span id="pokemon_name"></span></h3>
-                    <h4>Normal</h4>
+                <div class="col-4  position-fixed text-center " id="info" >
+                    <div class="superior">
+                        <h2 class="interior">POKEDEX</h2>
+                    </div>
+                    <h3><span id="pokemon_name" class="nombres"></span></h3>
+                    <h4>Normal Sprite</h4>
                     <span id="pokemon_img"></span>
-                    <h4>Shiny</h4>
+                    <h4>Shiny Sprite</h4>
                     <span id="pokemon_imgsh"></span>
                     
-                    <p>types:
-                        <span id="pokemon_type"></span>
+                    <p>Tipos:
+                        <span id="pokemon_type" class="nombres"></span>
                     </p>
-                    <p>height:
+                    <p>Height:
                         <span id="pokemon_height"></span>
                     </p>
-                    <p>weigth:
+                    <p>Weigth:
                         <span id="pokemon_weigth"></span>
-                    </p>                   
+                    </p>    
+                    <p>Habilidades:
+                        <span id="pokemon_ability" class="nombres"></span>
+                    </p>                                   
                 </div>
             </div>           
         </div>
         <script>
-            const max_poke=151;
+            const max_poke=18;
             for(let i=1;i<=max_poke;i++){
                 $('#pokemones').append(`
-                <div class="col bg-info">
+                <div class="col poke_imagen">
                     <img value="${i}" src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${i}.png?raw=true">
                 </div>
             `);
@@ -50,31 +57,27 @@
             $('img').on("click", function(){
                 let idp=$(this).attr("value");
                 //alert(idp);
-                $('#id_pokemon').append(idp);
                 let url="https://pokeapi.co/api/v2/pokemon/"+idp;
                 $.get(url,function(respuesta){
                     console.log(respuesta);
                     limpiar();
-                    $('#pokemon_name').append(respuesta.name);
-                    
-
+                    $('#pokemon_name').append("<u>"+respuesta.name+"</u>");
                     $('#pokemon_img').append(" <img  src="+respuesta.sprites.front_default+">");
                     $('#pokemon_img').append(" <img  src="+respuesta.sprites.back_default+">");
-
                     $('#pokemon_imgsh').append(" <img  src="+respuesta.sprites.front_shiny+">");
                     $('#pokemon_imgsh').append(" <img  src="+respuesta.sprites.back_shiny+">");
-                    
-
-
                  //   $('#pokemon_img').append(`<img src="https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${idp}.png?raw=true">`);
                     $('#pokemon_height').append(respuesta.height);
                     $('#pokemon_weigth').append(respuesta.weight);
-
                   //  console.log(respuesta.types[0].type.name);
-
                     for(let i=0; i<respuesta.types.length;i++){
 //                        $('#pokemon_type').append(respuesta.types[i]);
-                            $('#pokemon_type').append("<li>"+respuesta.types[i].type.name+"</li>");
+                        let tipo="type "+respuesta.types[i].type.name;
+                            $('#pokemon_type').append("<li class=\""+tipo+"\">"+respuesta.types[i].type.name+"</li>");
+                    }
+                    for(let i=0; i<respuesta.abilities.length;i++){
+//                        $('#pokemon_type').append(respuesta.types[i]);
+                            $('#pokemon_ability').append("<li>"+respuesta.abilities[i].ability.name+"</li>");
                     }
                 });
             });
@@ -85,6 +88,7 @@
                 $('#pokemon_height').html("");
                 $('#pokemon_weigth').html("");
                 $('#pokemon_type').html("");
+                $('#pokemon_ability').html("");
                 
             };
 
